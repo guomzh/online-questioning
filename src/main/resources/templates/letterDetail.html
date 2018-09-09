@@ -1,0 +1,40 @@
+<#include "header.html" />
+<link rel="stylesheet" media="all" href="../styles/letter.css">
+<div id="main">
+    <div class="zg-wrap zu-main clearfix ">
+        <ul class="letter-list">
+            <#list conversations as conversation>
+            <li id="conversation-item-10005_622873">
+                <div class="letter-info">
+                    <span class="l-time">${conversation.message.createdDate?string("yyyy-MM-dd HH:mm:ss")}</span>
+                    <div class="l-operate-bar">
+                        <!--<a href="javascript:void(0);" class="sns-action-del" data-id="10005_622873">
+                        删除
+                        </a>-->
+                    </div>
+                </div>
+                <div class="chat-headbox">
+                    <a class="list-head">
+                        <img alt="头像" src="${conversation.user.headUrl}">
+                    </a>
+                </div>
+                <div class="letter-detail">
+                    <a title="通知" class="letter-name level-color-1">
+                        <#if (user.name == conversation.user.name)>
+                            我
+                        <#else>
+                           ${conversation.user.name}
+                        </#if>
+                    </a>
+                    <p class="letter-not-brief">
+                        ${conversation.message.content}
+                    </p>
+                </div>
+            </li>
+        </#list>
+        </ul>
+    </div>
+</div>
+<#include "js.html" />
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+<#include "footer.html" />

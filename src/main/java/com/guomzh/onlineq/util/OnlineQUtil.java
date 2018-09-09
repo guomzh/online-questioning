@@ -1,5 +1,6 @@
 package com.guomzh.onlineq.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,21 @@ import java.security.MessageDigest;
  */
 public class OnlineQUtil {
     private static final Logger logger = LoggerFactory.getLogger(OnlineQUtil.class);
+    public static int ANONYMOUS_USER_ID = 0;
+    public static int ENTITY_QUESTION=1;
+    public static int ENTITY_COMMENT=2;
+    public static String getJSONString(int code) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        return json.toJSONString();
+    }
+
+    public static String getJSONString(int code, String msg) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        json.put("msg", msg);
+        return json.toJSONString();
+    }
 
     public static String MD5(String key) {
         char hexDigits[] = {

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +31,7 @@ public class LoginController {
     public String login(Model model,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        @RequestParam(value = "next", required = false) String next,
                         @RequestParam(value = "rememberMe", defaultValue = "false") boolean rememberMe,
                         HttpServletResponse response) {
         try {
@@ -38,6 +40,9 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket", map.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if(!StringUtils.isEmpty(next)){
+                    return "redirect:"+next;
+                }
                 return "redirect:/";
             } else {
                 model.addAttribute("msg", map.get("msg"));
@@ -72,7 +77,9 @@ public class LoginController {
     }
 
     @RequestMapping(path = {"/loginReg"}, method = {RequestMethod.GET})
-    public String loginReg() {
+    public String loginReg(@RequestParam(value = "next", required = false) String next,
+                           Model model) {
+        model.addAttribute("next",next);
         return "login";
     }
 

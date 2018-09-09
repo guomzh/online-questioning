@@ -23,6 +23,10 @@ public class UserService {
         return userDao.selectById(id);
     }
 
+    public User getUserByName(String name){
+        return userDao.selectByName(name);
+    }
+
     public Map<String, String> login(String username, String password) {
         Map<String, String> map = new HashMap<>();
         if (StringUtils.isEmpty(username)) {
@@ -50,17 +54,17 @@ public class UserService {
     public String addLoginTicket(int userId) {
         LoginTicket ticket = new LoginTicket();
         Date now = new Date();
-        now.setTime(3600 * 24 * 15 + now.getTime());
+        now.setTime(3600 * 24 * 15 * 1000 + now.getTime());
         ticket.setUserId(userId);
         ticket.setExpired(now);
-        ticket.setStatus(1);
+        ticket.setStatus(0);
         ticket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
         loginTicketDao.addTicket(ticket);
         return ticket.getTicket();
     }
 
-    public void logout(String ticket){
-        loginTicketDao.updateStatus(ticket,0);
+    public void logout(String ticket) {
+        loginTicketDao.updateStatus(ticket, 1);
     }
 
     public Map<String, String> register(String username, String password) {

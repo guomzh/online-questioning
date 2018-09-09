@@ -20,7 +20,7 @@
                         <div class="feed-item-inner">
                             <div class="avatar">
                                 <a title="李淼" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/amuro1230">
-                                    <img src="../images/res/12a8e1ce5ad8060fddb93ae2df98028b_m.jpg" class="zm-item-img-avatar"></a>
+                                    <img src="${vo.user.headUrl}" class="zm-item-img-avatar"></a>
                             </div>
                             <div class="feed-main">
                                 <div class="feed-source" data-za-module="FeedSource">热门回答，来自
@@ -30,7 +30,7 @@
                                     <meta itemprop="answer-id" content="389034">
                                     <meta itemprop="answer-url-token" content="13174385">
                                     <h2 class="feed-title">
-                                        <a class="question_link" target="_blank" href="https://nowcoder.com/question/19857995#answer-389034">${vo.question.title}</a></h2>
+                                        <a class="question_link" target="_blank" href="/question/${vo.question.id}">${vo.question.title}</a></h2>
                                     <div class="feed-question-detail-item">
                                         <div class="question-description-plain zm-editable-content"></div>
                                     </div>
@@ -59,7 +59,7 @@
                                         </div>
                                         <div class="zm-item-rich-text expandable js-collapse-body" data-resourceid="123114" data-action="/answer/content" data-author-name="李淼" data-entry-url="/question/19857995/answer/13174385">
                                             <textarea hidden="" class="content">怕被当作服务员，可以穿White tie full dress（一般二般的服务员没那么讲究）： &lt;br&gt; 黑色或藏蓝色燕尾服 &lt;br&gt; 裤边带有镶边的同样颜色长裤 &lt;br&gt; 正装白衬衫 &lt;br&gt; 白色腰封 &lt;br&gt; 白色蝴蝶领结 &lt;br&gt; 黑色袜子 &lt;br&gt; 黑色非系带皮鞋 &lt;br&gt;&lt;br&gt;既然你们都说这是服务员标配，那么请告诉我哪家餐厅服务员和领班如此打扮：&lt;br&gt;&lt;img src="https://pic4.zhimg.com/aa49b7ceff22ea68ca5f747115cd17af_b.jpg" data-rawwidth="618" data-rawheight="412" class="origin_image zh-lightbox-thumb" width="618" data-original="https://pic4.zhimg.com/aa49b7ceff22ea68ca5f747115cd17af_r.jpg"&gt;&lt;br&gt;&lt;br&gt; 如果不喜欢过于正式的服装，白天的场合可以来个Morning Dress &lt;br&gt; Morning coat &lt;br&gt; 和外套材质一样的马甲 &lt;br&gt; 条纹或者格子浅色长裤， &lt;br&gt; 衬衫 &lt;br&gt; Ascot tie &lt;br&gt; 与tie颜色相配的小方巾 &lt;br&gt; 黑鞋黑袜 &lt;br&gt; 一般二般的服务员也绝对不会戴Ascot，轻松hold住。我试过一回这么穿，感觉很不错。&lt;br&gt;既然这也说是服务员，我还真感兴趣了，请问在哪家店面可以见到图里这位老服务员？&lt;br&gt;&lt;img src="https://pic2.zhimg.com/90b610c42a6a4995db03459aff04bb71_b.jpg" data-rawwidth="594" data-rawheight="410" class="origin_image zh-lightbox-thumb" width="594" data-original="https://pic2.zhimg.com/90b610c42a6a4995db03459aff04bb71_r.jpg"&gt;还有这两位服务员：&lt;br&gt;&lt;img src="https://pic2.zhimg.com/93b8ae7f1a13ed11ac9dde9548a20dad_b.jpg" data-rawwidth="1000" data-rawheight="1400" class="origin_image zh-lightbox-thumb" width="1000" data-original="https://pic2.zhimg.com/93b8ae7f1a13ed11ac9dde9548a20dad_r.jpg"&gt;&lt;br&gt;&lt;br&gt;别看你们见识少，嘴炮倒是放得棒棒的呢！&lt;br&gt;&lt;img src="https://pic3.zhimg.com/f336ff360e73fba6f9a024630220f0e6_b.jpg" data-rawwidth="618" data-rawheight="360" class="origin_image zh-lightbox-thumb" width="618" data-original="https://pic3.zhimg.com/f336ff360e73fba6f9a024630220f0e6_r.jpg"&gt;</textarea>
-                                            <div class="zh-summary summary clearfix">${vo.question.content}…
+                                            <div class="zh-summary summary clearfix">${vo.question.content}
                                                 <a href="https://nowcoder.com/question/19857995/answer/13174385" class="toggle-expand">显示全部</a></div>
                                             <p class="visible-expanded">
                                                 <a itemprop="url" class="answer-date-link meta-item" data-tip="s$t$发布于 2011-09-23" target="_blank" href="https://nowcoder.com/question/19857995/answer/13174385">编辑于 2015-06-24</a></p>
@@ -184,4 +184,6 @@
         <div class="tooltip-arrow arrow"></div>
         <div class="tooltip-inner inner">如需转载，请通过私信或评论联系我</div></div>
 </div>
+<#include "js.html" />
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
 <#include "footer.html" />

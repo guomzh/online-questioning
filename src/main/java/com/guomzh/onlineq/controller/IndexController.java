@@ -1,7 +1,7 @@
 package com.guomzh.onlineq.controller;
 import com.guomzh.onlineq.domain.Question;
 import com.guomzh.onlineq.domain.ViewObject;
-import com.guomzh.onlineq.service.QeustionService;
+import com.guomzh.onlineq.service.QuestionService;
 import com.guomzh.onlineq.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class IndexController {
     @Autowired
     private UserService userService;
     @Autowired
-    private QeustionService qeustionService;
+    private QuestionService qeustionService;
 
     @RequestMapping(path = {"/user/{userId}"} , method = {RequestMethod.GET})
     public String userIndex(Model model, @PathVariable("userId") int userId){

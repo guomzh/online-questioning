@@ -6694,6 +6694,19 @@ header.navbar .navbar-toggle .icon-bar {
     /*for ie8不变省略号问题*/
     word-wrap:normal;
 }
+
+.letter-not-brief {
+  position: absolute;
+  left: 80px;
+  top: 50px;
+  z-index: 2;
+  color: #666;
+  float: left;
+  font-size: 14px;
+  width: 300px;
+  white-space: nowrap;
+
+}
 .msg-num {
     position: absolute;
     top: 0;
