@@ -5,6 +5,7 @@ import com.guomzh.onlineq.domain.EnvContext;
 import com.guomzh.onlineq.domain.Question;
 import com.guomzh.onlineq.domain.ViewObject;
 import com.guomzh.onlineq.service.CommentService;
+import com.guomzh.onlineq.service.LikeService;
 import com.guomzh.onlineq.service.QuestionService;
 import com.guomzh.onlineq.service.UserService;
 import com.guomzh.onlineq.util.OnlineQUtil;
@@ -35,8 +36,13 @@ public class QuestionController {
 
     @Autowired
     private CommentService commentService;
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LikeService likeService;
+
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title, @RequestParam("content") String content) {
@@ -46,12 +52,12 @@ public class QuestionController {
             question.setTitle(title);
             question.setCreatedDate(new Date());
             question.setCommentCount(0);
-            if (envContext.getUser() == null){
-               return OnlineQUtil.getJSONString(999);
-            } else{
+            if (envContext.getUser() == null) {
+                return OnlineQUtil.getJSONString(999);
+            } else {
                 question.setUserId(envContext.getUser().getId());
             }
-            if(questionService.addQuestion(question)>0){
+            if (questionService.addQuestion(question) > 0) {
                 return OnlineQUtil.getJSONString(0);
             }
         } catch (Exception e) {
@@ -62,14 +68,21 @@ public class QuestionController {
 
     @RequestMapping(path = {"/question/{id}"})
     public String questionDetail(Model model,
-                                 @PathVariable("id") int id){
-        Question question=questionService.getById(id);
-        List<Comment> commentList=commentService.getCommentsByEntity(id,OnlineQUtil.ENTITY_QUESTION);
-        List<ViewObject> comments=new ArrayList<>();
-        for(Comment comment: commentList){
-            ViewObject vo=new ViewObject();
-            vo.set("comment",comment);
-            vo.set("user",userService.getUser(comment.getUserId()));
+                                 @PathVariable("id") int id) {
+        Question question = questionService.getById(id);
+        List<Comment> commentList = commentService.getCommentsByEntity(id, OnlineQUtil.ENTITY_QUESTION);
+        List<ViewObject> comments = new ArrayList<>();
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+
+            if(envContext.getUser()==null){
+                vo.set("liked", 0);
+            } else{
+                vo.set("liked", likeService.getLikeStatus(envContext.getUser().getId(),OnlineQUtil.ENTITY_COMMENT,comment.getId()));
+            }
+            vo.set("likeCount",likeService.getLikeCount(OnlineQUtil.ENTITY_COMMENT,comment.getId())+"赞同");
+            vo.set("user", userService.getUser(comment.getUserId()));
             comments.add(vo);
         }
         model.addAttribute("question", question);

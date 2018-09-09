@@ -45,7 +45,7 @@
             error: function (oResult) {
                 if (oResult.code === 999) {
                     alert('请登录后再操作');
-                    window.location.href = '/reglogin?next=' + window.decodeURIComponent(window.location.href);
+                    window.location.href = '/loginReg?next=' + window.decodeURIComponent(window.location.href);
                 } else {
                     alert('出现错误，请重试');
                 }

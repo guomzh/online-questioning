@@ -1,4 +1,4 @@
-# online-questioning  在线问答平台, 这是我模仿知乎做的一个问答交流平台
+# online-questioning  从零开始开发在线问答平台, 这是我模仿知乎做的一个贴吧类问答交流平台
 
 使用到的技术栈：  
 1、spring/springboot  
@@ -53,4 +53,28 @@
 ### 评论中心
 
 ### 消息中心（赞，评论通知，私信通知，回答采纳等）
+### Redis数据结构使用场景
+
+|      |                    List                    |                        Set                         |    SortedSet     |       Hash       |                      KV                      |
+| :--: | :----------------------------------------: | :------------------------------------------------: | :--------------: | :--------------: | :------------------------------------------: |
+| 用途 | 栈操作，双向列表，使用于最新列表，关注列表 | 适用于无顺序的集合，点赞点踩，抽奖，已读，共同好友 | 排行榜，优先队列 | 对象属性，不定长 | 单一数值，验证码，PV(page views)点击量，缓存 |
+| api  |                   lpush                    |                       sdiff                        |       zadd       |       hset       |                     set                      |
+| api  |                    lpop                    |                      smembers                      |      zscore      |       hget       |                    setex                     |
+| api  |                   blpop                    |                       sinter                       |      zrange      |     hgetAll      |                     incr                     |
+| api  |                   lindex                   |                       scard                        |      zcount      |     hexists      |                                              |
+| api  |                   lrange                   |                                                    |      zrank       |      hkeys       |                                              |
+| api  |                    lrem                    |                                                    |     zrevrank     |      hvals       |                                              |
+| api  |                  linsert                   |                                                    |                  |                  |                                              |
+| api  |                    lset                    |                                                    |                  |                  |                                              |
+| api  |                   rpush                    |                                                    |                  |                  |                                              |
+
+### 例如：实现PV(page views)点击量功能等
+
+* 点赞(Set)
+* 关注(Set)
+* 排行榜(SortedSet)
+* 验证码(KV)
+* 缓存(序列化存KV)
+* 异步队列(中间层)
+* 判断队列(中间层)
 
