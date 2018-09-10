@@ -1,0 +1,12 @@
+.my_footer{
+    height: 30px;
+    line-height: 35px;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: darkslategrey;
+    color: #fff;
+    font-family: Arial;
+    font-size: 14px;
+    letter-spacing: 1px;
+}

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.List;
+
 /**
  * @author zgm
  * @date 2018/9/9 23:07
@@ -28,7 +30,7 @@ public class RedisAdapter implements InitializingBean {
             jedis = pool.getResource();
             return jedis.sadd(key, value);
         } catch (Exception e) {
-            logger.error("redis操作异常 "+e.getMessage());
+            logger.error("redis操作异常 " + e.getMessage());
         } finally {
             if (jedis != null) {
                 jedis.close();
@@ -37,13 +39,13 @@ public class RedisAdapter implements InitializingBean {
         return 0;
     }
 
-    public long scard(String key){
+    public long scard(String key) {
         Jedis jedis = null;
         try {
             jedis = pool.getResource();
-            return  jedis.scard(key);
+            return jedis.scard(key);
         } catch (Exception e) {
-            logger.error("redis操作异常 "+e.getMessage());
+            logger.error("redis操作异常 " + e.getMessage());
         } finally {
             if (jedis != null) {
                 jedis.close();
@@ -58,7 +60,7 @@ public class RedisAdapter implements InitializingBean {
             jedis = pool.getResource();
             return jedis.srem(key, value);
         } catch (Exception e) {
-            logger.error("redis操作异常 "+e.getMessage());
+            logger.error("redis操作异常 " + e.getMessage());
         } finally {
             if (jedis != null) {
                 jedis.close();
@@ -67,18 +69,48 @@ public class RedisAdapter implements InitializingBean {
         return 0;
     }
 
-    public boolean sismember(String key,String value){
+    public boolean sismember(String key, String value) {
         Jedis jedis = null;
         try {
             jedis = pool.getResource();
-            return  jedis.sismember(key,value);
+            return jedis.sismember(key, value);
         } catch (Exception e) {
-            logger.error("redis操作异常 "+e.getMessage());
+            logger.error("redis操作异常 " + e.getMessage());
         } finally {
             if (jedis != null) {
                 jedis.close();
             }
         }
         return false;
+    }
+
+    public long lpush(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.lpush(key, value);
+        } catch (Exception e) {
+            logger.error("redis操作异常 " + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    public List<String> brpop(int timeout, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.brpop(timeout, key);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
     }
 }

@@ -1,6 +1,11 @@
 package com.guomzh.onlineq.controller;
 
+import com.guomzh.onlineq.async.EventModel;
+import com.guomzh.onlineq.async.EventProducer;
+import com.guomzh.onlineq.async.EventType;
+import com.guomzh.onlineq.domain.Comment;
 import com.guomzh.onlineq.domain.EnvContext;
+import com.guomzh.onlineq.service.CommentService;
 import com.guomzh.onlineq.service.LikeService;
 import com.guomzh.onlineq.util.OnlineQUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,12 @@ public class LikeController {
     @Autowired
     private EnvContext envContext;
 
+    @Autowired
+    private EventProducer eventProducer;
+
+    @Autowired
+    private CommentService commentService;
+
     @RequestMapping(path = {"/like"}, method = {RequestMethod.POST})
     @ResponseBody
     public String like(@RequestParam("commentId") int commentId) {
@@ -29,6 +40,17 @@ public class LikeController {
             return OnlineQUtil.getJSONString(999);
         }
         long likeCount = likeService.like(envContext.getUser().getId(), OnlineQUtil.ENTITY_COMMENT, commentId);
+
+        Comment comment = commentService.getCommentById(commentId);
+
+        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+                .setActorId(envContext.getUser().getId())
+                .setEntityType(OnlineQUtil.ENTITY_COMMENT)
+                .setEntityId(commentId)
+                .setEntityOwnerId(comment.getUserId())
+                .setExt("questionId",String.valueOf(comment.getEntityId()))
+        );
+
         return OnlineQUtil.getJSONString(0, String.valueOf(likeCount) + "赞同");
     }
 

@@ -13,8 +13,11 @@ import java.security.MessageDigest;
 public class OnlineQUtil {
     private static final Logger logger = LoggerFactory.getLogger(OnlineQUtil.class);
     public static int ANONYMOUS_USER_ID = 0;
-    public static int ENTITY_QUESTION=1;
-    public static int ENTITY_COMMENT=2;
+    public static int ADMIN_USER_ID = 1;
+    public static int LIKE_USER_ID = 2;
+    public static int ENTITY_QUESTION=100;
+    public static int ENTITY_COMMENT=101;
+
     public static String getJSONString(int code) {
         JSONObject json = new JSONObject();
         json.put("code", code);

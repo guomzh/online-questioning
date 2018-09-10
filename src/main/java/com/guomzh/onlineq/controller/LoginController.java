@@ -39,6 +39,9 @@ public class LoginController {
             if (map.containsKey("ticket")) {
                 Cookie cookie = new Cookie("ticket", map.get("ticket"));
                 cookie.setPath("/");
+                if(rememberMe){
+                    cookie.setMaxAge(Integer.MAX_VALUE);
+                }
                 response.addCookie(cookie);
                 if(!StringUtils.isEmpty(next)){
                     return "redirect:"+next;
@@ -58,6 +61,7 @@ public class LoginController {
     public String reg(Model model,
                       @RequestParam("username") String username,
                       @RequestParam("password") String password,
+                      @RequestParam("email") String email,
                       HttpServletResponse response) {
         try {
             Map<String, String> map = userService.register(username, password);

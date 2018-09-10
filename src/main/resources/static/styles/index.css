@@ -9718,7 +9718,7 @@ a>.invisible {
     float: left;
     width: 61px;
     height: 100%;
-    background-image: url(../images/res/nk.png);
+    background-image: url(../images/res/zhi.jpg);
     background-repeat: no-repeat;
     background-position: center;
     text-indent: -9999px;
@@ -11710,7 +11710,11 @@ html.no-touchevents .zh-add-question-form .question-suggest-ac-wrap .ac-renderer
 .zh-summary {
     -webkit-tap-highlight-color: rgba(225,225,225,.5);
     position: relative;
-    cursor: pointer
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient: vertical;
 }
 
 .zh-summary .inline-img,.CardAdFeed-image {
