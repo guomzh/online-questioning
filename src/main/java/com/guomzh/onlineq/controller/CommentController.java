@@ -54,6 +54,7 @@ public class CommentController {
             comment.setEntityType(OnlineQUtil.ENTITY_QUESTION);
             commentService.addComment(comment);
             //更新评论数
+            //1786104060@qq.com
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
             questionService.updateCommentCount(count, comment.getEntityId());
             eventProducer.fireEvent(new EventModel(EventType.COMMENT)

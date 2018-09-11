@@ -1,6 +1,7 @@
-#parse("header.html")
+<#include "header.html" />
 <link rel="stylesheet" href="../../styles/result.css">
 <link rel="stylesheet" href="../../styles/detail.css">
+<link rel="stylesheet" type="text/css" href="../../styles/common.css">
     <div id="main">
         <div class="zg-wrap zu-main clearfix ">
             <div class="zm-profile-section-wrap zm-profile-followee-page">
@@ -12,19 +13,19 @@
                 <div class="zm-profile-section-list">
                     <div id="zh-profile-follows-list">
                         <div class="zh-general-list clearfix">
-                            #foreach($vo in $followees)
+                            <#list followees as vo>
                             <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
-                                #if($vo.followed)
+                                <#if vo.followed == true >
                                 <div class="zg-right">
                                     <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
-                                    js-follow-user" data-status="1" data-id="$vo.user.id">取消关注</button>
+                                    js-follow-user" data-status="1" data-id="${vo.user.id}">取消关注</button>
                                 </div>
-                                #else
+                                <#else>
                                 <div class="zg-right">
                                     <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
-                                    js-follow-user" data-id="$vo.user.id">关注</button>
+                                    js-follow-user" data-id="${vo.user.id}">关注</button>
                                 </div>
-                                #end
+                                </#if>
                                 <a title="Barty" class="zm-item-link-avatar" href="/user/${vo.user.id}">
                                     <img src="${vo.user.headUrl}" class="zm-item-img-avatar">
                                 </a>
@@ -43,7 +44,7 @@
                                     </div>
                                 </div>
                             </div>
-                            #end
+                            </#list>
                         </div>
                         <a aria-role="button" class="zg-btn-white zu-button-more">更多</a>
                     </div>
@@ -51,6 +52,18 @@
             </div>
         </div>
     </div>
-#parse("js.html")
+<script type="text/javascript" src="/scripts/main/jquery.js"></script>
+<script type="text/javascript" src="/scripts/main/base/base.js"></script>
+<script type="text/javascript" src="/scripts/main/base/util.js"></script>
+<script type="text/javascript" src="/scripts/main/base/event.js"></script>
+<script type="text/javascript" src="/scripts/main/util/action.js"></script>
+<script type="text/javascript" src="/scripts/main/util/business.js"></script>
+<script type="text/javascript" src="/scripts/main/component/component.js"></script>
+<script type="text/javascript" src="/scripts/main/component/popup.js"></script>
+<script type="text/javascript" src="/scripts/main/component/popupAdd.js"></script>
+<script type="text/javascript" src="/scripts/main/component/popupMsg.js"></script>
+<script type="text/javascript" src="/scripts/main/site/home.js"></script>
+<script async="" src="/scripts/ga.js"></script>
+<script type="text/javascript" src="/scripts/main/jquery.js"></script>
 <script type="text/javascript" src="/scripts/main/site/follow.js"></script>
-#parse("footer.html")
+<#include "footer.html" />

@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
+import java.util.Map;
 
 /**
  * @author zgm
@@ -12,11 +13,17 @@ import java.security.MessageDigest;
  */
 public class OnlineQUtil {
     private static final Logger logger = LoggerFactory.getLogger(OnlineQUtil.class);
+
+    //默认用户
     public static int ANONYMOUS_USER_ID = 0;
     public static int ADMIN_USER_ID = 1;
     public static int LIKE_USER_ID = 2;
-    public static int ENTITY_QUESTION=100;
-    public static int ENTITY_COMMENT=101;
+    public static int FOLLOW_USER_ID = 3;
+
+    //entity实体类型
+    public static int ENTITY_QUESTION = 100;
+    public static int ENTITY_COMMENT = 101;
+    public static int ENTITY_USER = 102;
 
     public static String getJSONString(int code) {
         JSONObject json = new JSONObject();
@@ -28,6 +35,15 @@ public class OnlineQUtil {
         JSONObject json = new JSONObject();
         json.put("code", code);
         json.put("msg", msg);
+        return json.toJSONString();
+    }
+
+    public static String getJSONString(int code, Map<String, Object> map) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            json.put(entry.getKey(), entry.getValue());
+        }
         return json.toJSONString();
     }
 

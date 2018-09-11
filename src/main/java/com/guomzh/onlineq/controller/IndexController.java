@@ -1,8 +1,14 @@
 package com.guomzh.onlineq.controller;
+
+import com.guomzh.onlineq.domain.EnvContext;
 import com.guomzh.onlineq.domain.Question;
+import com.guomzh.onlineq.domain.User;
 import com.guomzh.onlineq.domain.ViewObject;
+import com.guomzh.onlineq.service.CommentService;
+import com.guomzh.onlineq.service.FollowService;
 import com.guomzh.onlineq.service.QuestionService;
 import com.guomzh.onlineq.service.UserService;
+import com.guomzh.onlineq.util.OnlineQUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +29,32 @@ public class IndexController {
     @Autowired
     private QuestionService qeustionService;
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private FollowService followService;
+
+    @Autowired
+    private EnvContext envContext;
+
     @RequestMapping(path = {"/user/{userId}"} , method = {RequestMethod.GET})
     public String userIndex(Model model, @PathVariable("userId") int userId){
         List<ViewObject> vos = getQuestions(userId,0,10);
         model.addAttribute("vos", vos);
-        return "index";
+        User user = userService.getUser(userId);
+        ViewObject vo = new ViewObject();
+        vo.set("user", user);
+        vo.set("commentCount", commentService.getUserCommentCount(userId));
+        vo.set("followerCount", followService.getFollowerCount(OnlineQUtil.ENTITY_USER, userId));
+        vo.set("followeeCount", followService.getFolloweeCount(userId, OnlineQUtil.ENTITY_USER));
+        if (envContext.getUser() != null) {
+            vo.set("followed", followService.isFollower(envContext.getUser().getId(), OnlineQUtil.ENTITY_USER, userId));
+        } else {
+            vo.set("followed", false);
+        }
+        model.addAttribute("profileUser", vo);
+        return "profile";
     }
 
     @RequestMapping(path={"/","index"}, method = {RequestMethod.GET})
@@ -44,6 +71,7 @@ public class IndexController {
             ViewObject vo =new ViewObject();
             vo.set("question", question);
             vo.set("user", userService.getUser(question.getUserId()));
+            vo.set("followCount", followService.getFollowerCount(OnlineQUtil.ENTITY_QUESTION, question.getId()));
             vos.add(vo);
         }
         return vos;

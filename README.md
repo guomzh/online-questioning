@@ -84,3 +84,75 @@
 
 例如：实现评论后给提问者发一条站内通知功能
 
+### 问题评论邮件通知功能实现，手写一个异步实现代码
+思路：  
+* 自己手动实现一个异步队列
+* 用redis做异步消息队列实现，利用多线程来实现异步发送邮件  
+* 用javax.mail发送邮件，使用smtps协议
+技术关键流程：  
+1、定义消息事件接口  
+```
+public interface EventHandler {
+
+    void doHandle(EventModel model);
+
+    List<EventType> getSupportEventTypes();
+}
+```
+2、定义消息模型,可以用map的数据结构来实现  
+3、定义生产者，发布消息到redis构建的异步队列中(利用redis的阻塞队列操作)  
+```
+public class EventProducer {
+    @Autowired
+    private RedisAdapter redisAdapter;
+    public boolean fireEvent(EventModel eventModel) {
+        try {
+            String json = JSONObject.toJSONString(eventModel);
+            String key = RedisKeyUtil.getEventQueueKey();
+            redisAdapter.lpush(key, json);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
+```  
+4、发布事件  
+5、定义消费者，开启多线程异步处理事件  
+```
+         Thread thread =new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 while (true){
+                     String key= RedisKeyUtil.getEventQueueKey();
+                     List<String> events =redisAdapter.brpop(0,key);
+                     for(String message:events){
+                         //消息队列的第一个值可能是key,返回值的原因
+                         if(message.equals(key)){
+                             continue;
+                         }
+                         EventModel eventModel= JSON.parseObject(message,EventModel.class);
+                         if(!config.containsKey(eventModel.getType())){
+                             logger.error("不能识别的事件");
+                             continue;
+                         }
+                         for(EventHandler handler :config.get(eventModel.getType())){
+                             handler.doHandle(eventModel);
+                         }
+                     }
+                 }
+             }
+         });
+         thread.start();
+```
+
+### 关注服务，如A关注了某人，某问题
+分一下功能点：  
+* 首页问题关注数
+* 详情页问题关注列表
+* 粉丝/关注人列表
+* 关注接口设计，关注列表分页
+* 关注异步事件处理
+
+存储结构：
+redis: zset / list

@@ -17,36 +17,40 @@ import java.util.List;
 
 /**
  * @author zgm
- * @date 2018/9/10 12:40
+ * @date 2018/9/11 16:22
  */
 @Component
-public class LikeHandler implements EventHandler {
-
-    @Autowired
-    private MessageService messageService;
+public class FollowHandler  implements EventHandler {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private MessageService messageService;
     @Override
     public void doHandle(EventModel model) {
-        //如果是自己给自己点赞，就不给自己发私信了
+        //如果是自己给自己关注，就不给自己发私信了
         if (model.getEntityOwnerId() == model.getActorId()) {
             return;
         }
         Message message = new Message();
-        message.setFromId(OnlineQUtil.LIKE_USER_ID);
+        message.setFromId(OnlineQUtil.FOLLOW_USER_ID);
         message.setToId(model.getEntityOwnerId());
         message.setCreatedDate(new Date());
         User user = userService.getUser(model.getActorId());
-        message.setContent("用户 " + user.getName() + " 赞了你的评论, <a href=\"http://localhost:8080/question/" + model.getExt("questionId") + "\">点击查看该问题</a>");
+        if(model.getEntityType()==OnlineQUtil.ENTITY_QUESTION){
+            message.setContent("用户 " + user.getName() +
+                    " 关注了您的问题 \" "+ model.getExt("questionTitle")+ " \" <a href=\"http://localhost:8080/question/" + model.getEntityId() + "\">点击查看</a>");
+        }
+        else if(model.getEntityType()==OnlineQUtil.ENTITY_USER){
+            message.setContent("用户 " + user.getName() +
+                    " 关注了您, <a href=\"http://localhost:8080/user/" + model.getActorId() + "\">点击查看该用户主页</a>");
+        }
         message.setConversationId(message.getConversationId());
         messageService.addMessage(message);
     }
 
-    //本handler只处理点赞（like）类型的消息
     @Override
     public List<EventType> getSupportEventTypes() {
-        return Arrays.asList(EventType.LIKE);
+        return Arrays.asList(EventType.FOLLOW);
     }
 }

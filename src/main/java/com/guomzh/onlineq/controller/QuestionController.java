@@ -4,10 +4,7 @@ import com.guomzh.onlineq.domain.Comment;
 import com.guomzh.onlineq.domain.EnvContext;
 import com.guomzh.onlineq.domain.Question;
 import com.guomzh.onlineq.domain.ViewObject;
-import com.guomzh.onlineq.service.CommentService;
-import com.guomzh.onlineq.service.LikeService;
-import com.guomzh.onlineq.service.QuestionService;
-import com.guomzh.onlineq.service.UserService;
+import com.guomzh.onlineq.service.*;
 import com.guomzh.onlineq.util.OnlineQUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +40,9 @@ public class QuestionController {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private FollowService followService;
+
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title, @RequestParam("content") String content) {
@@ -66,7 +66,7 @@ public class QuestionController {
         return OnlineQUtil.getJSONString(1, "失败");
     }
 
-    @RequestMapping(path = {"/question/{id}"})
+    @RequestMapping(path = {"/question/{id}"} , method = {RequestMethod.GET})
     public String questionDetail(Model model,
                                  @PathVariable("id") int id) {
         Question question = questionService.getById(id);
@@ -87,6 +87,11 @@ public class QuestionController {
         }
         model.addAttribute("question", question);
         model.addAttribute("comments", comments);
+        if (envContext.getUser() != null) {
+            model.addAttribute("followed", followService.isFollower(envContext.getUser().getId(), OnlineQUtil.ENTITY_QUESTION, id));
+        } else {
+            model.addAttribute("followed", false);
+        }
         return "detail";
     }
 }

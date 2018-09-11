@@ -1,4 +1,4 @@
-#parse("header.html")
+<#include "header.html" />
 <link rel="stylesheet" href="../styles/index.css">
 <link rel="stylesheet" href="../styles/detail.css">
     <div class="zg-wrap zu-main clearfix " role="main">
@@ -14,13 +14,13 @@
                         <div class="zh-general-list clearfix">
                             <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
                                 <div class="zg-right">
-                                    #if ($profileUser.followed)
+                                    <#if profileUser.followed == true >
                                     <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
-                                    js-follow-user" data-status="1" data-id="$profileUser.user.id">取消关注</button>
-                                    #else
+                                    js-follow-user" data-status="1" data-id="${profileUser.user.id}">取消关注</button>
+                                    <#else>
                                     <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
-                                    js-follow-user" data-id="$profileUser.user.id">关注</button>
-                                    #end
+                                    js-follow-user" data-id="${profileUser.user.id}">关注</button>
+                                    </#if>
                                 </div>
                                 <a title="Barty" class="zm-item-link-avatar" href="/user/${profileUser.user.id}">
                                     <img src="${profileUser.user.headUrl}" class="zm-item-img-avatar">
@@ -56,30 +56,30 @@
                 </div>
                 <div class="zu-main-feed-con navigable" data-feedtype="topstory" id="zh-question-list">
                     <div id="js-home-feed-list" class="zh-general-list topstory clearfix">
-                        #foreach($vo in $vos)
+                        <#list vos as vo>
                         <div class="feed-item folding feed-item-hook feed-item-2
                         " feed-item-a="" data-type="a" id="feed-2" data-za-module="FeedItem" data-za-index="">
                             <meta itemprop="ZReactor" data-id="389034" data-meta="">
                             <div class="feed-item-inner">
                                 <div class="avatar">
-                                    <a title="$!{vo.user.name}" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/amuro1230">
-                                        <img src="$!{vo.user.headUrl}" class="zm-item-img-avatar"></a>
+                                    <a title="${vo.user.name}" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/amuro1230">
+                                        <img src="${vo.user.headUrl}" class="zm-item-img-avatar"></a>
                                 </div>
                                 <div class="feed-main">
                                     <div class="feed-content" data-za-module="AnswerItem">
                                         <meta itemprop="answer-id" content="389034">
                                         <meta itemprop="answer-url-token" content="13174385">
                                         <h2 class="feed-title">
-                                            <a class="question_link" target="_blank" href="/question/$!{vo.question.id}">$!{vo.question.title}</a></h2>
+                                            <a class="question_link" target="_blank" href="/question/${vo.question.id}">${vo.question.title}</a></h2>
                                         <div class="feed-question-detail-item">
                                             <div class="question-description-plain zm-editable-content"></div>
                                         </div>
                                         <div class="expandable entry-body">
                                             <div class="zm-item-vote">
-                                                <a class="zm-item-vote-count js-expand js-vote-count" href="javascript:;" data-bind-votecount="">${vo.followCount}</a></div>
+                                                <a class="zm-item-vote-count js-expand js-vote-count" href="javascript:;" data-bind-votecount="">${vo.followCount!'0'}关注</a></div>
                                             <div class="zm-item-answer-author-info">
-                                                <a class="author-link" data-tip="p$b$amuro1230" target="_blank" href="/user/$!{vo.user.id}">$!{vo.user.name}</a>
-                                                ，$data.format('yyyy-MM-dd HH:mm:ss', $!{vo.question.createdDate})</div>
+                                                <a class="author-link" data-tip="p$b$amuro1230" target="_blank" href="/user/${vo.user.id}">${vo.user.name}</a>
+                                                ，${vo.question.createdDate?string("yyyy-MM-dd HH:mm:ss")})</div>
                                             <div class="zm-item-vote-info" data-votecount="4168" data-za-module="VoteInfo">
                                                 <span class="voters text">
                                                     <a href="#" class="more text">
@@ -108,13 +108,13 @@
                                 </div>
                             </div>
                         </div>
-                        #end
+                        </#list>
                     </div>
                     <a href="javascript:;" id="zh-load-more" class="zg-btn-white zg-r3px zu-button-more">更多</a>
                 </div>
             </div>
         </div>
     </div>
-#parse("js.html")
+<#include "js.html" />
 <script type="text/javascript" src="/scripts/main/site/profile.js"></script>
-#parse("footer.html")
+<#include "footer.html" />

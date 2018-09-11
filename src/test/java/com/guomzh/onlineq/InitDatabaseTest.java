@@ -4,6 +4,7 @@ import com.guomzh.onlineq.dao.QuestionDao;
 import com.guomzh.onlineq.dao.UserDao;
 import com.guomzh.onlineq.domain.Question;
 import com.guomzh.onlineq.domain.User;
+import com.guomzh.onlineq.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,9 @@ public class InitDatabaseTest {
 
     @Autowired
     QuestionDao questionDao;
+
+    @Autowired
+    UserService userService;
 
     @Test
     public void userDaoTest() {
@@ -63,5 +67,10 @@ public class InitDatabaseTest {
             System.out.println(questions.get(i).getContent());
         }
         Assert.assertNotNull(questions.get(1));
+    }
+
+    @Test
+    public void addUser(){
+        userService.register("关注通知","123456");
     }
 }
