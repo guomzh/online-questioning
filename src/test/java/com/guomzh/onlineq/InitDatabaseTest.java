@@ -71,6 +71,6 @@ public class InitDatabaseTest {
 
     @Test
     public void addUser(){
-        userService.register("关注通知","123456");
+        userService.register("关注通知","123456","123@qq.com");
     }
 }

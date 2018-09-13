@@ -1,4 +1,5 @@
 <#include "header.html" />
+<#include "author.html" />
 <link rel="stylesheet" href="../styles/index.css">
 <link rel="stylesheet" href="../styles/detail.css">
     <div class="zg-wrap zu-main clearfix " role="main">
@@ -30,13 +31,16 @@
 
                                     <!-- <div class="zg-big-gray">计蒜客教研首席打杂</div> -->
                                     <div class="details zg-gray">
-                                        <a target="_blank" href="/user/${profileUser.user.id}/followers" class="zg-link-gray-normal">${profileUser.followerCount}粉丝</a>
+                                        <a  href="/user/${profileUser.user.id}/followers" class="zg-link-gray-normal">${profileUser.followerCount}粉丝</a>
                                         /
-                                        <a target="_blank" href="/user/${profileUser.user.id}/followees" class="zg-link-gray-normal">${profileUser.followeeCount}关注</a>
+                                        <a  href="/user/${profileUser.user.id}/followees" class="zg-link-gray-normal">${profileUser.followeeCount}关注</a>
                                         /
-                                        <a target="_blank" href="#" class="zg-link-gray-normal">${profileUser.commentCount} 回答</a>
+                                  <!--      <a  href="#" class="zg-link-gray-normal">${profileUser.commentCount} 回答</a>
                                         /
-                                        <a target="_blank" href="#" class="zg-link-gray-normal">548 赞同</a>
+                                        <a  href="#" class="zg-link-gray-normal">548 赞同</a>-->
+                                        <span>${profileUser.commentCount} 回答</span>
+                                        /
+                                        <span>548 赞同<span>
                                     </div>
                                 </div>
                             </div>

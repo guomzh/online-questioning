@@ -57,27 +57,48 @@ public class LoginController {
         }
     }
 
+    @RequestMapping(path = {"/reg_prepare"}, method = {RequestMethod.POST})
+    public String reg_prepare( Model model,
+                               @RequestParam(value = "username",required = false) String username,
+                               @RequestParam(value = "password",required = false) String password){
+        model.addAttribute("username",username);
+        model.addAttribute("password",password);
+        model.addAttribute("msg","请输入注册邮箱！");
+        return "register";
+    }
+
     @RequestMapping(path = {"/reg"}, method = {RequestMethod.POST})
     public String reg(Model model,
+                      @RequestParam("email") String email,
                       @RequestParam("username") String username,
                       @RequestParam("password") String password,
-                      @RequestParam("email") String email,
                       HttpServletResponse response) {
         try {
-            Map<String, String> map = userService.register(username, password);
-            if (map.containsKey("ticket")) {
-                Cookie cookie = new Cookie("ticket", map.get("ticket"));
-                cookie.setPath("/");
-                response.addCookie(cookie);
-                return "redirect:/";
-            } else {
+            Map<String, String> map = userService.register(username, password,email);
+            if( map.containsKey("msg")){
                 model.addAttribute("msg", map.get("msg"));
-                return "login";
+                return "register";
+            } else if(map.containsKey("toVerify")){
+                return "register_tip";
             }
         } catch (Exception e) {
             logger.error("注册出现异常. " + e.getMessage());
             return "login";
         }
+        return "index";
+    }
+
+    @RequestMapping(path = {"/regVerify"}, method = {RequestMethod.GET})
+    public String regVerify(@RequestParam(value = "p")String p){
+          if(p==null){
+              return "index";
+          }
+          if(userService.emailVerify(p)){
+              return "register_success_tip";
+          }
+          else{
+              return "register_fail_tip";
+          }
     }
 
     @RequestMapping(path = {"/loginReg"}, method = {RequestMethod.GET})

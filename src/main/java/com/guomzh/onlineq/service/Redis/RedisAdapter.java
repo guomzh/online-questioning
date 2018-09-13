@@ -41,6 +41,66 @@ public class RedisAdapter implements InitializingBean {
         return 0;
     }
 
+    public long hset(String key,String field, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.hset(key, field, value);
+        } catch (Exception e) {
+            logger.error("redis操作异常 " + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    public String hget(String key,String field) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.hget(key, field);
+        } catch (Exception e) {
+            logger.error("redis操作异常 " + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+    public long del(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.del(key);
+        } catch (Exception e) {
+            logger.error("redis操作异常 " + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    public  long expire(String key, int timeout){
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.expire(key,timeout);
+        } catch (Exception e) {
+            logger.error("redis操作异常 " + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
     public long scard(String key) {
         Jedis jedis = null;
         try {
@@ -76,6 +136,21 @@ public class RedisAdapter implements InitializingBean {
         try {
             jedis = pool.getResource();
             return jedis.sismember(key, value);
+        } catch (Exception e) {
+            logger.error("redis操作异常 " + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean exists(String key){
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.exists(key);
         } catch (Exception e) {
             logger.error("redis操作异常 " + e.getMessage());
         } finally {

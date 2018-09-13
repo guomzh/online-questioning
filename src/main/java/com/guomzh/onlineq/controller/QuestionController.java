@@ -1,9 +1,9 @@
 package com.guomzh.onlineq.controller;
 
-import com.guomzh.onlineq.domain.Comment;
-import com.guomzh.onlineq.domain.EnvContext;
-import com.guomzh.onlineq.domain.Question;
-import com.guomzh.onlineq.domain.ViewObject;
+import com.guomzh.onlineq.async.EventModel;
+import com.guomzh.onlineq.async.EventProducer;
+import com.guomzh.onlineq.async.EventType;
+import com.guomzh.onlineq.domain.*;
 import com.guomzh.onlineq.service.*;
 import com.guomzh.onlineq.util.OnlineQUtil;
 import org.slf4j.Logger;
@@ -43,6 +43,9 @@ public class QuestionController {
     @Autowired
     private FollowService followService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title, @RequestParam("content") String content) {
@@ -58,6 +61,11 @@ public class QuestionController {
                 question.setUserId(envContext.getUser().getId());
             }
             if (questionService.addQuestion(question) > 0) {
+                eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
+                .setActorId(question.getUserId())
+                .setExt("title",question.getTitle())
+                .setExt("content",question.getContent())
+                .setEntityId(question.getId()));
                 return OnlineQUtil.getJSONString(0);
             }
         } catch (Exception e) {
@@ -87,6 +95,21 @@ public class QuestionController {
         }
         model.addAttribute("question", question);
         model.addAttribute("comments", comments);
+        List<ViewObject> followUsers = new ArrayList<ViewObject>();
+        // 获取关注的用户信息
+        List<Integer> users = followService.getFollowers(OnlineQUtil.ENTITY_QUESTION, id, 20);
+        for (Integer userId : users) {
+            ViewObject vo = new ViewObject();
+            User u = userService.getUser(userId);
+            if (u == null) {
+                continue;
+            }
+            vo.set("name", u.getName());
+            vo.set("headUrl", u.getHeadUrl());
+            vo.set("id", u.getId());
+            followUsers.add(vo);
+        }
+        model.addAttribute("followUsers", followUsers);
         if (envContext.getUser() != null) {
             model.addAttribute("followed", followService.isFollower(envContext.getUser().getId(), OnlineQUtil.ENTITY_QUESTION, id));
         } else {

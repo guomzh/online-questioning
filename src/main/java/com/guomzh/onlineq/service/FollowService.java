@@ -53,12 +53,12 @@ public class FollowService {
         return ids;
     }
 
-    public List<Integer> getFollewers(int entityType, int entityId, int count) {
+    public List<Integer> getFollowers(int entityType, int entityId, int count) {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
         return getIdsFromSet(redisAdapter.zrevrange(followerKey, 0, count));
     }
 
-    public List<Integer> getFollewers(int entityType, int entityId, int offset, int count) {
+    public List<Integer> getFollowers(int entityType, int entityId, int offset, int count) {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
         return getIdsFromSet(redisAdapter.zrevrange(followerKey, offset, offset + count));
     }

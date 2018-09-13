@@ -1,4 +1,5 @@
 <#include "header.html" />
+<#include "author.html" />
 <link rel="stylesheet" href="../../styles/result.css">
 <link rel="stylesheet" href="../../styles/detail.css">
 <link rel="stylesheet" type="text/css" href="../../styles/common.css">
@@ -34,13 +35,15 @@
 
                                     <!-- <div class="zg-big-gray">计蒜客教研首席打杂</div> -->
                                     <div class="details zg-gray">
-                                        <a target="_blank" href="/user/${vo.user.id}/followers" class="zg-link-gray-normal">${vo.followerCount}粉丝</a>
+                                        <a  href="/user/${vo.user.id}/followers" class="zg-link-gray-normal">${vo.followerCount}粉丝</a>
                                         /
-                                        <a target="_blank" href="/user/${vo.user.id}/followees" class="zg-link-gray-normal">${vo.followeeCount}关注</a>
+                                        <a  href="/user/${vo.user.id}/followees" class="zg-link-gray-normal">${vo.followeeCount}关注</a>
                                         /
-                                        <a target="_blank" href="#" class="zg-link-gray-normal">${vo.commentCount} 回答</a>
+                                        <!--<a  href="#" class="zg-link-gray-normal"></a>-->
+                                        <span >${vo.commentCount} 回答</span>
                                         /
-                                        <a target="_blank" href="#" class="zg-link-gray-normal">548 赞同</a>
+                                       <!-- <a  href="#" class="zg-link-gray-normal">548 赞同</a>-->
+                                        <span >548 赞同</span>
                                     </div>
                                 </div>
                             </div>

@@ -1,14 +1,18 @@
-# online-questioning  从零开始开发在线问答平台, 这是我模仿知乎做的一个贴吧类问答交流平台
+# online-questioning 在线问答平台, 这是我模仿知乎做的一个问答交流平台，类似贴吧那种，具有的功能：能发帖，回复，评论，站内私信，邮件服务等
 
 使用到的技术栈：  
 1、spring/springboot  
-* 拦截器
-
-2、mybatis  
-3、前端模板引擎freemarker  
-4、Redis  
-5、solr  
-6、fastDFS  
+* intercepter拦截器实现登录权限控制 
+* javax.mali邮件服务，如有新评论时发邮件通知用户，注册时邮件验证 
+* ioc项目容器中对象管理，对容器中beans操作 
+* aop平台日志操作记录 
+* maven管理整个项目依赖   
+2、mybatis操作数据库主要业务数据   
+3、前端模板引擎freemarker ，渲染整个前端模板  
+4、算法设计：trie前缀树实现网站敏感词过滤  
+5、Redis实现异步队列，利用多线程实现异步事件处理，主要针对一些耗时操作，进行异步执行，如发邮件，评论后发站内私信通知等  
+6、使用 Redis 数据结构中的 set 集合实现用户对问题评论的点赞点踩功能  
+7、solr导入mysql数据，建立问题和标题文档库，利用ik-analyzer进行中文分词，用户可以进行站内全文搜索  
 
 开发通用的新模块流程：  
 1、数据库设计  
@@ -22,7 +26,43 @@
 1. 用户名合法性检测（长度，敏感词，重复，特殊字符）  
 2. 密码长度要求  
 3. 密码salt加密，密码强度检查（md5库）  
-4. 用户邮件/短信激活  
+4. 用户注册邮件激活  
+
+我在实现用户注册邮箱激活时自己的实现思路：  
+当用户提交注册表单信息时，把表单信息存到redis的hash数据结构中，同时产生一个对应的key，  
+这时发布一个异步事件，发送一封邮件，同时把这个key放到链接中发到用户的注册邮箱中，当用户  
+访问邮箱中这个链接时，在redis中查出这个key对应的注册信息，并存到数据库中完成注册  
+```
+  //信息存到redis中
+        String register_ticket=OnlineQUtil.MD5(email);
+        redisAdapter.hset(register_ticket,"email",email);
+        redisAdapter.hset(register_ticket,"username",username);
+        redisAdapter.hset(register_ticket,"password", password);
+        redisAdapter.expire(register_ticket,60*15);
+        redisAdapter.sadd("email",email);
+  //发布异步事件
+        eventProducer.fireEvent(new EventModel(EventType.REGISTER)
+        .setExt("register_ticket",register_ticket)
+        .setExt("email",email));
+  //发送邮件
+      @Override
+      public void doHandle(EventModel model) {
+          Map<String ,Object> map=new HashMap<>();
+          map.put("url","http://127.0.0.1:8080/regVerify?p="+model.getExt("register_ticket"));
+          mailSender.sendWithHTMLTemplate(model.getExt("email"),"<我的知乎——在线问答平台>注册激活邮件",
+                  "mails/register_email.html", map);
+      }
+   //从redis中读取注册信息，完成注册
+   if(redisAdapter.exists(p)){
+               try {
+                   String email=redisAdapter.hget(p,"email");
+                   String username=redisAdapter.hget(p,"username");
+                   String password=redisAdapter.hget(p,"password");
+                }
+                ...
+     }
+  
+```
 
 ## 登录模块
 1、服务器密码校验/三方校验，token（sessionId或者cookie的一个key）登记  
@@ -156,3 +196,12 @@ public class EventProducer {
 
 存储结构：
 redis: zset / list
+
+### 平台内容排序算法：
+1、Score = (P-1)/(T+2)^G  
+P表示投票数，G表示分值根据时间降低速率，相当于重力加速度，T表示发布到现在时间间隔，单位小时    
+2、f(t,x,y,z)=log z + yt/45000  
+t等于发布到现在的时间差，如一个差86400秒  
+x等于赞数-踩数  
+如果x大于0则y=1,x小于0则y=-1，x=0则y=0  
+z等于x的绝对值，如果x=0，则z=1  

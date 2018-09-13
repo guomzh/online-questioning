@@ -30,7 +30,7 @@
                 ${msg}
                 <#else>
                 <br/>
-                </#if>
+            </#if>
             </h2>
         </div>
         <div class="desk-front sign-flow clearfix sign-flow-simple">
@@ -39,22 +39,17 @@
                     <input type="hidden" name="_xsrf" value="21aa1c8d254df2899b23ab9afbd62a53">
                     <div class="group-inputs">
                         <div class="email input-wrapper">
-                            <input type="text" name="username" aria-label="手机号或邮箱" placeholder="用户名" required="">
+                            <input type="text" name="email" aria-label="邮箱" placeholder="邮箱" required="">
+                        </div>
+                        <div class="email input-wrapper">
+                            <input type="text" name="username" value="${username}" aria-label="用户名" placeholder="用户名" required="">
                         </div>
                         <div class="input-wrapper">
-                            <input type="password" name="password" aria-label="密码" placeholder="密码" required="">
+                            <input type="password" name="password" value="${password}" aria-label="密码" placeholder="密码" required="">
                         </div>
                     </div>
-                    <input type="hidden" name="next" value="${next}"/>
                     <div class="button-wrapper command clearfix">
-                        <button class="sign-button submit" type="submit" onclick="form=document.getElementById('loginReg');form.action='/login'">登录</button>
-                        <button class="sign-button submit" type="submit" onclick="form=document.getElementById('loginReg');form.action='/reg_prepare'">注册</button>
-                    </div>
-                    <div class="signin-misc-wrapper clearfix">
-                        <label class="remember-me">
-                            <input type="checkbox" name="rememberMe" checked="" value="true"> 记住我
-                        </label>
-                        <a class="unable-login" href="#">无法登录?</a>
+                        <button class="sign-button submit" type="submit" style="align-self: center;">注册</button>
                     </div>
                 </form>
             </div>
