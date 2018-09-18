@@ -8,6 +8,7 @@ import java.util.Map;
  * @date 2018/9/10 11:02
  */
 public class EventModel {
+    private static final long  serialVersionUID = 1L;
     private EventType type;
     private int actorId;
     private int entityType;

@@ -39,11 +39,11 @@ public class FollowHandler  implements EventHandler {
         User user = userService.getUser(model.getActorId());
         if(model.getEntityType()==OnlineQUtil.ENTITY_QUESTION){
             message.setContent("用户 " + user.getName() +
-                    " 关注了您的问题 \" "+ model.getExt("questionTitle")+ " \" <a href=\"http://127.0.0.1:8080/question/" + model.getEntityId() + "\">点击查看</a>");
+                    " 关注了您的问题 \" "+ model.getExt("questionTitle")+ " \" <a href=\"/question/" + model.getEntityId() + "\">点击查看</a>");
         }
         else if(model.getEntityType()==OnlineQUtil.ENTITY_USER){
             message.setContent("用户 " + user.getName() +
-                    " 关注了您, <a href=\"http://127.0.0.1:8080/user/" + model.getActorId() + "\">点击查看该用户主页</a>");
+                    " 关注了您, <a href=\"http://117.48.200.9/user/" + model.getActorId() + "\">点击查看该用户主页</a>");
         }
         message.setConversationId(message.getConversationId());
         messageService.addMessage(message);

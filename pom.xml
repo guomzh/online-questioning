@@ -6,7 +6,7 @@
 	<groupId>com.guomzh</groupId>
 	<artifactId>online-questioning</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>online-questioning</name>
 	<description>This is a platform like zhihu</description>
@@ -34,11 +34,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -94,6 +89,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>onlineq</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

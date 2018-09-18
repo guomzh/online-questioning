@@ -1,18 +1,11 @@
 package com.guomzh.onlineq;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.guomzh.onlineq.domain.User;
-import redis.clients.jedis.BinaryClient;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Tuple;
-
 /**
  * @author zgm
  * @date 2018/9/9 15:51
  */
 public class JedisTest {
-    public static void print(int index, Object obj) {
+  /*  public static void print(int index, Object obj) {
         System.out.println(String.format("%d , %s", index, obj.toString()));
     }
 
@@ -53,11 +46,11 @@ public class JedisTest {
         print(11, jedis.linsert(listName, BinaryClient.LIST_POSITION.BEFORE, "a8", "insert2"));
         print(12, jedis.lrange(listName, 0, 20));
 
-        /**
+        *//**
          *  hash操作,优点是可以随时给数据库添加或删除属性，这在mysql中很麻烦
          *  例如今天给用户加个年龄属性，明天给用户加个email属性
          *  这在关系型数据库中很麻烦，在redis中用hset很方便
-         */
+         *//*
         String userKey = "user_01";
         jedis.hset(userKey, "name", "小明");
         jedis.hset(userKey, "age", "18");
@@ -156,5 +149,5 @@ public class JedisTest {
         User user2= JSON.parseObject(user1_value,User.class);
         print(46,user2);
 
-    }
+    }*/
 }

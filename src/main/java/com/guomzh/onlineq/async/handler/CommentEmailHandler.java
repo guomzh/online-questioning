@@ -34,7 +34,7 @@ public class CommentEmailHandler  implements EventHandler {
         Map<String ,Object> map=new HashMap<>();
         map.put("username", model.getExt("username"));
         map.put("questionTitle",question.getTitle());
-        mailSender.sendWithHTMLTemplate(model.getExt("email"),"您在<我的知乎——在线问答平台>发布的问题有了新评论",
+        mailSender.sendWithHTMLTemplate(model.getExt("email"),"您在<在线问答平台>发布的问题有了新评论",
                 "mails/comment_email.html", map);
     }
 

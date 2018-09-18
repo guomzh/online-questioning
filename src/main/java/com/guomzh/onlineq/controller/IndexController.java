@@ -40,7 +40,7 @@ public class IndexController {
 
     @RequestMapping(path = {"/user/{userId}"} , method = {RequestMethod.GET})
     public String userIndex(Model model, @PathVariable("userId") int userId){
-        List<ViewObject> vos = getQuestions(userId,0,10);
+        List<ViewObject> vos = getQuestions(userId,0,40);
         model.addAttribute("vos", vos);
         User user = userService.getUser(userId);
         ViewObject vo = new ViewObject();
@@ -59,7 +59,7 @@ public class IndexController {
 
     @RequestMapping(path={"/","index"}, method = {RequestMethod.GET})
     public String index(Model model){
-        List<ViewObject> vos = getQuestions(0,0,10);
+        List<ViewObject> vos = getQuestions(0,0,40);
         model.addAttribute("vos", vos);
         return "index";
     }

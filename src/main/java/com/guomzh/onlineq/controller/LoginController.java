@@ -57,7 +57,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(path = {"/reg_prepare"}, method = {RequestMethod.POST})
+    @RequestMapping(path = {"/reg_prepare"}, method = {RequestMethod.GET})
     public String reg_prepare( Model model,
                                @RequestParam(value = "username",required = false) String username,
                                @RequestParam(value = "password",required = false) String password){

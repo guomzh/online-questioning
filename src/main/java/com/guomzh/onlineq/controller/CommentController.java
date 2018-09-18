@@ -1,8 +1,6 @@
 package com.guomzh.onlineq.controller;
 
-import com.guomzh.onlineq.async.EventModel;
 import com.guomzh.onlineq.async.EventProducer;
-import com.guomzh.onlineq.async.EventType;
 import com.guomzh.onlineq.domain.Comment;
 import com.guomzh.onlineq.domain.EnvContext;
 import com.guomzh.onlineq.service.CommentService;
@@ -57,11 +55,11 @@ public class CommentController {
             //1786104060@qq.com
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
             questionService.updateCommentCount(count, comment.getEntityId());
-            eventProducer.fireEvent(new EventModel(EventType.COMMENT)
+/*            eventProducer.fireEvent(new EventModel(EventType.COMMENT)
                     .setExt("username",envContext.getUser().getName())
                     .setEntityId(questionId)
                     .setExt("email", "guom_zh@qq.com")
-            );
+            );*/
 
         } catch (Exception e) {
             logger.error("增加评论失败" + e.getMessage());
