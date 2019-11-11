@@ -25,7 +25,7 @@ public class EmailVerifyHandler implements EventHandler {
     @Override
     public void doHandle(EventModel model) {
         Map<String ,Object> map=new HashMap<>();
-        map.put("url","http://117.48.200.9/regVerify?p="+model.getExt("register_ticket"));
+        map.put("url","http://www.guomzh.com/regVerify?p="+model.getExt("register_ticket"));
         mailSender.sendWithHTMLTemplate(model.getExt("email"),"<在线问答平台>注册激活邮件",
                 "mails/register_email.html", map);
     }

@@ -43,7 +43,7 @@ public class FollowHandler  implements EventHandler {
         }
         else if(model.getEntityType()==OnlineQUtil.ENTITY_USER){
             message.setContent("用户 " + user.getName() +
-                    " 关注了您, <a href=\"http://117.48.200.9/user/" + model.getActorId() + "\">点击查看该用户主页</a>");
+                    " 关注了您, <a href=\"http://www.guomzh.com/user/" + model.getActorId() + "\">点击查看该用户主页</a>");
         }
         message.setConversationId(message.getConversationId());
         messageService.addMessage(message);
